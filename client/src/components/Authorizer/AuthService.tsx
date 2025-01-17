@@ -7,10 +7,7 @@ interface AuthResponse {
 }
 
 class AuthService {
-  private static baseURL: string =
-    process.env.PRODUCTION === "1"
-      ? "http://34.224.214.243:3000"
-      : "http://localhost:3000";
+  private static baseURL: string = "http://localhost:3000";
 
   static async loginUser(email: string, password: string) {
     try {
@@ -49,16 +46,15 @@ class AuthService {
 
       const response = await axios.get(url);
 
+      console.log("PRODUCTION");
+      console.log(process.env.PRODUCTION);
+
       return { userEmailExists: response.data.userEmailExists };
     } catch (error) {
-      if (process.env.PRODUCTION) {
-        console.error("PRODUCTION DEFINED" + process.env.PRODUCTION, error);
-      } else {
-        console.error(
-          "Error checking if user email exists within the database: ",
-          error
-        );
-      }
+      console.error(
+        "Error checking if user email exists within the database: ",
+        error
+      );
 
       return { userEmailExists: null };
     }
