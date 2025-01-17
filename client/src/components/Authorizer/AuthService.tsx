@@ -8,7 +8,7 @@ interface AuthResponse {
 
 class AuthService {
   private static baseURL: string =
-    process.env.HOME === "/home/ubuntu"
+    process.env.PRODUCTION === "1"
       ? "http://34.224.214.243:3000"
       : "http://localhost:3000";
 
@@ -52,7 +52,8 @@ class AuthService {
       return { userEmailExists: response.data.userEmailExists };
     } catch (error) {
       console.error(
-        "Error checking if user email exists within the database: ",
+        "Error checking if user email exists within the database: " +
+          process.env.PRODUCTION,
         error
       );
       return { userEmailExists: null };
