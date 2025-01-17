@@ -7,7 +7,10 @@ interface AuthResponse {
 }
 
 class AuthService {
-  private static baseURL: string = "http://localhost:3000";
+  private static baseURL: string =
+    process.env.HOME === "/home/ubuntu"
+      ? "http://34.224.214.243:3000"
+      : "http://localhost:3000";
 
   static async loginUser(email: string, password: string) {
     try {

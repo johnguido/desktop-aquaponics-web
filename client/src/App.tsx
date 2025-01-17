@@ -1,6 +1,9 @@
 import { useState } from "react";
 import Authorizer from "./components/Authorizer/Authorizer";
 import Dashboard from "./components/Dashboard/Dashboard";
+import { config } from "dotenv";
+
+config();
 
 function App() {
   const [user, setUser] = useState({
