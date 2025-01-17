@@ -1,5 +1,4 @@
-import { hash } from "crypto";
-import EmailController from "../controllers/emailController";
+import crypto from "crypto";
 import database from "./database";
 import bcrypt from "bcrypt";
 

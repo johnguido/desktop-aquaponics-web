@@ -105,7 +105,7 @@ const VerifyEmailRegister = ({
         } else {
           setTimeout(() => {
             setSharedState({
-              subMessage: "Somethign went wrong.  Please try again",
+              subMessage: "Something went wrong.  Please try again",
               registerRequested: false,
               justRegistered: false,
             });

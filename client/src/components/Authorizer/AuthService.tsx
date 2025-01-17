@@ -46,9 +46,6 @@ class AuthService {
 
       const response = await axios.get(url);
 
-      console.log("PRODUCTION");
-      console.log(process.env.PRODUCTION);
-
       return { userEmailExists: response.data.userEmailExists };
     } catch (error) {
       console.error(
