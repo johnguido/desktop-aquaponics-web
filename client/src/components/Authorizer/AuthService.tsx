@@ -51,11 +51,15 @@ class AuthService {
 
       return { userEmailExists: response.data.userEmailExists };
     } catch (error) {
-      console.error(
-        "Error checking if user email exists within the database: " +
-          process.env.PRODUCTION,
-        error
-      );
+      if (process.env.PRODUCTION) {
+        console.error("PRODUCTION DEFINED" + process.env.PRODUCTION, error);
+      } else {
+        console.error(
+          "Error checking if user email exists within the database: ",
+          error
+        );
+      }
+
       return { userEmailExists: null };
     }
   }
