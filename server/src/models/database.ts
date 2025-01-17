@@ -9,8 +9,8 @@ class Database {
     try {
       this.pool = new Pool({
         host: "localhost",
-        user: "john",
-        database: "forcast_finder",
+        user: process.env.DATABASE_USER,
+        database: "desktop_aquaponics",
         password: process.env.DATABASE_PASS,
         port: 5432,
       });
