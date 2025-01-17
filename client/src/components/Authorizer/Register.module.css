@@ -1,6 +1,6 @@
 .main {
   width: 460px;
-  height: 500px;
+  height: 610px;
 
   background-color: black;
 
@@ -67,7 +67,8 @@
 
 .email,
 .password,
-.passwordConfirm {
+.passwordConfirm,
+.systemID {
   height: 30px;
   width: 362px;
 

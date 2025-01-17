@@ -14,6 +14,7 @@ interface VerfiyEmailProps {
   firstName: string;
   lastName: string;
   email: string;
+  systemID: string;
   password: string;
 }
 
@@ -22,6 +23,7 @@ const VerifyEmailRegister = ({
   firstName,
   lastName,
   email,
+  systemID,
   password,
 }: VerfiyEmailProps) => {
   const [state, setState] = useState({
@@ -62,6 +64,7 @@ const VerifyEmailRegister = ({
       firstName,
       lastName,
       email,
+      systemID,
       password
     );
 

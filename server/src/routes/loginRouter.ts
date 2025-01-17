@@ -11,7 +11,7 @@ loginRouter.get(
 loginRouter.get("/user/verify/:email/:password", LoginController.verifyUser);
 
 loginRouter.post(
-  "/register/user/:firstName/:lastName/:email/:password",
+  "/register/user/:firstName/:lastName/:email/:systemID/:password",
   LoginController.regiserUser
 );
 

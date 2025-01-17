@@ -26,10 +26,11 @@ class AuthService {
     firstName: string,
     lastName: string,
     email: string,
+    systemID: string,
     password: string
   ) {
     try {
-      const url = `${this.baseURL}/login/register/user/${firstName}/${lastName}/${email}/${password}`;
+      const url = `${this.baseURL}/login/register/user/${firstName}/${lastName}/${email}/${systemID}/${password}`;
 
       const response = await axios.post(url);
 
