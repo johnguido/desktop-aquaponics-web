@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useState } from "react";
 import styles from "./Register.module.css";
-import VerifyEmail from "./VerifyEmailRegister";
+import VerifyEmailReigster from "./VerifyEmailRegister";
 import AuthService from "./AuthService";
 
 interface RegisterProps {
@@ -120,14 +120,14 @@ const Register = ({ setSharedState }: RegisterProps) => {
 
   if (state.emailNeedsVerified) {
     return (
-      <VerifyEmail
+      <VerifyEmailReigster
         setSharedState={setSharedState}
         firstName={state.firstName}
         lastName={state.lastName}
         email={state.email}
         systemID={state.systemID}
         password={state.password}
-      ></VerifyEmail>
+      ></VerifyEmailReigster>
     );
   }
 

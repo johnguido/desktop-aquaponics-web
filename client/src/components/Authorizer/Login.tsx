@@ -36,6 +36,7 @@ const Login = ({ setUser }: LoginProps) => {
   };
 
   const handleSignUpClick = () => {
+    setState({ ...state, email: "", password: "" });
     setSharedState({ ...sharedState, registerRequested: true });
   };
 
