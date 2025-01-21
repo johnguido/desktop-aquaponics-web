@@ -1,6 +1,8 @@
 import axios from "axios";
 
 interface AuthResponse {
+  success?: boolean | null;
+  passwordMatches?: boolean | null;
   userEmailExists?: boolean | null;
   pinSentToEmail?: boolean | null;
   userID?: string | null;
@@ -55,6 +57,26 @@ class AuthService {
       );
 
       return { userEmailExists: null };
+    }
+  }
+
+  static async setNewPasswordForUser(
+    email: string,
+    newPassword: string
+  ): Promise<AuthResponse> {
+    try {
+      const url = `${this.baseURL}/login/forgotPassword/${email}/${newPassword}`;
+
+      const response = await axios.post(url);
+
+      return {
+        success: response.data.success,
+        passwordMatches: response.data.passwordMatches,
+      };
+    } catch (error) {
+      console.error("Error setting new password for user", error);
+
+      return { success: false };
     }
   }
 

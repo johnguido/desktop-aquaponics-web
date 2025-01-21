@@ -1,37 +1,43 @@
 import { useState, useEffect } from "react";
-import styles from "./VerifyEmailRegister.module.css";
+import styles from "./VerifyEmailForgotPassword.module.css";
 import AuthService from "./AuthService";
 
 interface VerfiyEmailProps {
+  sharedState: {
+    mainMessage: string;
+    subMessage: string;
+    email: string;
+    emailNeedsVerified: boolean;
+    emailExists: boolean;
+    emailVerified: boolean;
+    password: string;
+    passwordConfirm: string;
+    isLoading: boolean;
+  };
+
   setSharedState: React.Dispatch<
     React.SetStateAction<{
       mainMessage: string;
       subMessage: string;
-      registerRequested: boolean;
-      justRegistered: boolean;
-      forgotPasswordRequested: boolean;
+      email: string;
+      emailNeedsVerified: boolean;
+      emailExists: boolean;
+      emailVerified: boolean;
+      password: string;
+      passwordConfirm: string;
+      isLoading: boolean;
     }>
   >;
-
-  firstName: string;
-  lastName: string;
-  email: string;
-  systemID: string;
-  password: string;
 }
 
-const VerifyEmailRegister = ({
+const VerifyEmailForgotPassword = ({
+  sharedState,
   setSharedState,
-  firstName,
-  lastName,
-  email,
-  systemID,
-  password,
 }: VerfiyEmailProps) => {
   const [state, setState] = useState({
     emailPin: ["", "", "", "", "", ""],
     isLoading: false,
-    subMessage: `Sending a 6 digit pin to ${email}`,
+    subMessage: `Sending a 6 digit pin to ${sharedState.email}`,
     pin: "",
   });
 
@@ -41,38 +47,20 @@ const VerifyEmailRegister = ({
 
     const pin = Math.floor(100000 + Math.random() * 900000);
 
-    const response = await AuthService.sendPinToEmail(email, String(pin));
+    await AuthService.sendPinToEmail(sharedState.email, String(pin));
 
     const elapsedTime = Date.now() - startTime;
     const remainingTime = Math.max(0, 1500 - elapsedTime);
 
     setTimeout(() => {
-      if (response.pinSentToEmail) {
-        setState({
-          ...state,
-          isLoading: false,
-          subMessage: `Pin sent to ${email}`,
-          pin: String(pin),
-        });
-      } else {
-        console.error("Error sending PIN");
-        setState({ ...state, isLoading: false });
-      }
+      setState({
+        ...state,
+        isLoading: false,
+        subMessage: `Pin sent to ${sharedState.email}`,
+        pin: String(pin),
+      });
     }, remainingTime);
   };
-
-  const registerUser = async () => {
-    const reponse = await AuthService.registerUser(
-      firstName,
-      lastName,
-      email,
-      systemID,
-      password
-    );
-
-    return reponse.userID;
-  };
-
   useEffect(() => {
     sendPinToEmail();
   }, []);
@@ -89,38 +77,10 @@ const VerifyEmailRegister = ({
 
     setState({ ...state, isLoading: true });
 
-    setTimeout(async () => {
-      if (pinInput === state.pin) {
-        setState({
-          ...state,
-          isLoading: true,
-          subMessage: "Success!  Reigstering user and moving to login",
-        });
+    setTimeout(() => {
+      setState({ ...state, isLoading: false });
 
-        const userID = await registerUser();
-
-        if (userID) {
-          setTimeout(() => {
-            setSharedState({
-              mainMessage: "Hi, Welcome Back! ",
-              subMessage: "Registration Successful! Login Below.",
-              registerRequested: false,
-              justRegistered: true,
-              forgotPasswordRequested: false,
-            });
-          }, 1500);
-        } else {
-          setTimeout(() => {
-            setSharedState({
-              mainMessage: "Hi, Welcome Back! ",
-              subMessage: "Something went wrong.  Please try again",
-              registerRequested: false,
-              justRegistered: false,
-              forgotPasswordRequested: false,
-            });
-          }, 1500);
-        }
-      } else {
+      if (!sharedState.emailExists) {
         setState({
           ...state,
           emailPin: ["", "", "", "", "", ""],
@@ -128,8 +88,27 @@ const VerifyEmailRegister = ({
           isLoading: false,
           subMessage: "Invalid pin.  Please try again.",
         });
+      } else {
+        if (pinInput === state.pin) {
+          setState({
+            ...state,
+            isLoading: true,
+            subMessage: "Success!  You're ready for a new password",
+          });
+
+          setTimeout(() => {
+            setState({ ...state, isLoading: false });
+            setSharedState({
+              ...sharedState,
+              mainMessage: "Nice, you made it!",
+              subMessage: "Enter your new password below",
+              emailNeedsVerified: false,
+              emailVerified: true,
+            });
+          }, 1500);
+        }
       }
-    }, 1500);
+    }, 1000);
   };
 
   const handleEmailPinKeyUp = (
@@ -230,4 +209,4 @@ const VerifyEmailRegister = ({
   );
 };
 
-export default VerifyEmailRegister;
+export default VerifyEmailForgotPassword;

@@ -9,10 +9,11 @@ interface User {
 }
 
 interface UserModelResponse {
-  success: boolean;
+  success: boolean | null;
   user?: User | null;
   emailExists?: boolean | null;
   userID?: string | null;
+  passwordMatches?: boolean | null;
   error?: any;
 }
 
@@ -111,6 +112,73 @@ class UserModel {
       return {
         success: false,
         emailExists: null,
+        error: err,
+      };
+    }
+  }
+
+  static async setNewPasswordForUser(
+    email: string,
+    newPassword: string
+  ): Promise<UserModelResponse> {
+    try {
+      await database.initialize();
+
+      const response = await database
+        .getPool()
+        .query("SELECT password FROM users WHERE email = $1", [email]);
+
+      if (response.rows.length > 0) {
+        const hashedPassword = response.rows[0].password;
+        const passwordMatches = await bcrypt.compare(
+          newPassword,
+          hashedPassword
+        );
+
+        if (passwordMatches) {
+          return {
+            success: false,
+            passwordMatches: true,
+          };
+        } else {
+          const salt = await bcrypt.genSalt();
+          const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+          const response = await database
+            .getPool()
+            .query("UPDATE users SET password = $1 WHERE email = $2", [
+              hashedPassword,
+              email,
+            ]);
+
+          if (response.rowCount === 1) {
+            return {
+              success: true,
+              passwordMatches: false,
+            };
+          }
+
+          console.log(
+            "Something very strange happened trying to set password for user, row count zero"
+          );
+          return {
+            success: false,
+            passwordMatches: null,
+          };
+        }
+      } else {
+        console.log(
+          "Something very strange happened trying to set password for user"
+        );
+        return {
+          success: false,
+          passwordMatches: null,
+        };
+      }
+    } catch (err) {
+      return {
+        success: false,
+        passwordMatches: null,
         error: err,
       };
     }

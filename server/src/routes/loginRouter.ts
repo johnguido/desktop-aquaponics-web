@@ -15,4 +15,9 @@ loginRouter.post(
   LoginController.regiserUser
 );
 
+loginRouter.post(
+  "/forgotPassword/:email/:newPassword",
+  LoginController.setNewPasswordForUser
+);
+
 export default loginRouter;

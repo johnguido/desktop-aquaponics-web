@@ -38,6 +38,18 @@ class LoginController {
       error: response.error,
     });
   }
+
+  static async setNewPasswordForUser(req, res): Promise<void> {
+    const { email, newPassword } = req.params;
+
+    const response = await userModel.setNewPasswordForUser(email, newPassword);
+
+    res.send({
+      success: response.success,
+      passwordMatches: response.passwordMatches,
+      error: response.error,
+    });
+  }
 }
 
 export default LoginController;

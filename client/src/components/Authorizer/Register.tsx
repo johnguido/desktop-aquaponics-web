@@ -6,9 +6,11 @@ import AuthService from "./AuthService";
 interface RegisterProps {
   setSharedState: React.Dispatch<
     React.SetStateAction<{
+      mainMessage: string;
       subMessage: string;
       registerRequested: boolean;
       justRegistered: boolean;
+      forgotPasswordRequested: boolean;
     }>
   >;
 }
@@ -57,9 +59,11 @@ const Register = ({ setSharedState }: RegisterProps) => {
 
   const handleSignInClick = () => {
     setSharedState({
+      mainMessage: "Hi, Welcome Back! ",
       subMessage: "Login Below",
       registerRequested: false,
       justRegistered: false,
+      forgotPasswordRequested: false,
     });
   };
 
@@ -133,7 +137,7 @@ const Register = ({ setSharedState }: RegisterProps) => {
 
   return (
     <main className={styles.main}>
-      <h1 className={styles.mainMessage}>Almost there! &#128071;</h1>
+      <h1 className={styles.mainMessage}>Almost There! &#128071;</h1>
       <h2 className={styles.subMessage}>Register Below</h2>
       <form className={styles.form} onSubmit={(e) => handleSignUpSubmit(e)}>
         <div className={styles.nameInput}>

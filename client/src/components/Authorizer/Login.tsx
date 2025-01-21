@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Register from "./Register.tsx";
+import ForgotPassword from "./ForgotPassword.tsx";
 import styles from "./Login.module.css";
 import AuthService from "./AuthService.tsx";
 
@@ -22,9 +23,11 @@ const Login = ({ setUser }: LoginProps) => {
   });
 
   const [sharedState, setSharedState] = useState({
+    mainMessage: "Hello There! ",
     subMessage: "Login Below",
     registerRequested: false,
     justRegistered: false,
+    forgotPasswordRequested: false,
   });
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +41,11 @@ const Login = ({ setUser }: LoginProps) => {
   const handleSignUpClick = () => {
     setState({ ...state, email: "", password: "" });
     setSharedState({ ...sharedState, registerRequested: true });
+  };
+
+  const handleForgotPasswordClick = () => {
+    setState({ ...state, email: "", password: "" });
+    setSharedState({ ...sharedState, forgotPasswordRequested: true });
   };
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
@@ -69,9 +77,13 @@ const Login = ({ setUser }: LoginProps) => {
     return <Register setSharedState={setSharedState}></Register>;
   }
 
+  if (sharedState.forgotPasswordRequested) {
+    return <ForgotPassword setSharedState={setSharedState}></ForgotPassword>;
+  }
+
   return (
     <main className={styles.main}>
-      <h1 className={styles.mainMessage}>Hi, Welcome Back! &#128075;</h1>
+      <h1 className={styles.mainMessage}>{sharedState.mainMessage}&#128075;</h1>
       <h2 className={styles.subMessage}>{sharedState.subMessage}</h2>
       <form className={styles.form} onSubmit={(e) => handleLoginSubmit(e)}>
         <div className={styles.emailInput}>
@@ -100,7 +112,12 @@ const Login = ({ setUser }: LoginProps) => {
             required
           ></input>
         </div>
-        <h3 className={styles.forgotPassword}>Forgot password?</h3>
+        <h3
+          className={styles.forgotPassword}
+          onClick={handleForgotPasswordClick}
+        >
+          Forgot password?
+        </h3>
         {state.isLoading ? (
           <button className={styles.submit} name="signUpSubmit" disabled>
             <div className={styles.loader}>
