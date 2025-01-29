@@ -1,7 +1,4 @@
 import { Pool } from "pg";
-import { config } from "dotenv";
-
-config();
 
 class Database {
   private static pool;

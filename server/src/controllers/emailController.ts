@@ -1,8 +1,5 @@
 import formData from "form-data";
 import Mailgun from "mailgun.js";
-import { config } from "dotenv";
-
-config();
 
 class EmailController {
   private static mailgunClient: any;
