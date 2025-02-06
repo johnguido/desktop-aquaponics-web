@@ -96,7 +96,11 @@ const Register = ({ setSharedState }: RegisterProps) => {
     setState({ ...state, isLoading: true });
     const startTime = Date.now();
 
-    const response = await AuthService.checkIfUserEmailExists(state.email);
+    const emailResponse = await AuthService.checkIfUserEmailExists(state.email);
+
+    const systemIdResponse = await AuthService.checkIfSystemIdExists(
+      state.systemID
+    );
 
     const elapsedTime = Date.now() - startTime;
     const remainingTime = Math.max(0, 1000 - elapsedTime);
@@ -104,19 +108,27 @@ const Register = ({ setSharedState }: RegisterProps) => {
     setTimeout(() => {
       //TODO what if reponse not succesfull?  Need to display somethign went wrong try again
 
-      if (!response.userEmailExists) {
+      if (!emailResponse.userEmailExists && systemIdResponse.idExists) {
         setState({ ...state, emailNeedsVerified: true, isLoading: false });
       } else {
         setState({ ...state, isLoading: false });
 
-        const emailRegisterInput = form.querySelector(
-          'input[name="email"]'
-        ) as HTMLInputElement;
+        if (emailResponse.userEmailExists) {
+          const emailRegisterInput = form.querySelector(
+            'input[name="email"]'
+          ) as HTMLInputElement;
 
-        emailRegisterInput.setCustomValidity(
-          "A user with this email already exists"
-        );
-        emailRegisterInput.reportValidity();
+          emailRegisterInput.setCustomValidity(
+            "A user with this email already exists"
+          );
+          emailRegisterInput.reportValidity();
+        }
+
+        if (!systemIdResponse.idExists) {
+          systemIdInput.setCustomValidity("This systemID does not exist");
+          systemIdInput.reportValidity();
+        }
+
         return;
       }
     }, remainingTime);

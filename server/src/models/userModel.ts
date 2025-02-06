@@ -6,6 +6,7 @@ interface User {
   id: string;
   firstName: string;
   lastName: string;
+  systemID: string;
 }
 
 interface UserModelResponse {
@@ -25,7 +26,7 @@ class UserModel {
       const response = await database
         .getPool()
         .query(
-          "SELECT id, first_name, last_name, password FROM users WHERE email = $1",
+          "SELECT id, first_name, last_name, password, system_id FROM users WHERE email = $1",
           [email]
         );
 
@@ -40,6 +41,7 @@ class UserModel {
               id: response.rows[0].id,
               firstName: response.rows[0].first_name,
               lastName: response.rows[0].last_name,
+              systemID: response.rows[0].system_id,
             },
           };
         }

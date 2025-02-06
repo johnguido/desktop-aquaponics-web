@@ -1,0 +1,49 @@
+.section {
+  width: 350px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 30px;
+
+  gap: 100px;
+}
+
+.inputContainer > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.inputContainer > div > input {
+  height: 30px;
+  width: 30px;
+
+  text-align: center;
+
+  background-color: #15151e;
+
+  border-radius: 5px;
+
+  color: white;
+
+  cursor: default;
+
+  border: 2px solid #0066ff;
+  padding: 4px 8px;
+  box-shadow: 0 0 10px rgba(0, 102, 255, 0.5);
+
+  outline: none;
+}

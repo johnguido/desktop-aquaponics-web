@@ -8,11 +8,20 @@ function App() {
     firstName: "",
     lastName: "",
     email: "",
+    systemID: "",
   });
+
+  //return <Dashboard></Dashboard>;
 
   //initial load need to send user to login page
   return (
-    <>{user.id != "" ? <Dashboard /> : <Authorizer setUser={setUser} />}</>
+    <>
+      {user.id != "" ? (
+        <Dashboard systemID={user.systemID} />
+      ) : (
+        <Authorizer setUser={setUser} />
+      )}
+    </>
   );
 }
 

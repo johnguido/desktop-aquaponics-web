@@ -1,0 +1,100 @@
+.main {
+  height: 95%;
+  width: 47%;
+
+  background-color: #15151e;
+
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  letter-spacing: 0.1rem;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 15px;
+}
+
+.section > div {
+  width: 350px;
+}
+
+.lightingOverride {
+  width: 350px;
+
+  font-size: 1.17rem;
+  font-weight: bold;
+
+  margin-top: 20px;
+  padding-top: 35px;
+
+  display: flex;
+  justify-content: space-around;
+
+  border: none;
+
+  text-align: center;
+}
+
+.lightingOverride label {
+  display: inline-block;
+  width: 100px;
+  padding: 10px;
+  border: solid 2px #ccc;
+  transition: all 0.3s;
+
+  cursor: pointer;
+}
+
+.lightingOverride input[type="radio"] {
+  display: none;
+}
+
+.lightingOverride input[type="radio"]:checked + label {
+  border: solid 2px #0066ff;
+}
+
+.lightingRangeSet {
+  width: 350px;
+
+  font-size: 1.17rem;
+  font-weight: bold;
+
+  margin-top: 25px;
+  padding-top: 35px;
+
+  display: flex;
+  justify-content: space-around;
+  gap: 15px;
+
+  border: none;
+
+  text-align: center;
+}
+
+.lightingRangeSet > label {
+  font-size: 0.8rem;
+}
+
+.save {
+  height: 50px;
+  width: 175px;
+
+  margin-top: 35px;
+
+  cursor: pointer;
+
+  background-color: rgba(0, 102, 255, 0.5);
+  box-shadow: 0 0 10px rgba(0, 102, 255, 0.5);
+
+  border-radius: 5px;
+
+  color: white;
+}

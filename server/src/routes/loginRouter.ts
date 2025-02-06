@@ -8,6 +8,11 @@ loginRouter.get(
   LoginController.checkIfUserEmailExists
 );
 
+loginRouter.get(
+  "/register/checkIfSystemIdExists/:systemID",
+  LoginController.checkIfSystemIdExists
+);
+
 loginRouter.get("/user/verify/:email/:password", LoginController.verifyUser);
 
 loginRouter.post(

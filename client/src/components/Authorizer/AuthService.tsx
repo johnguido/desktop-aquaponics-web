@@ -4,6 +4,7 @@ interface AuthResponse {
   success?: boolean | null;
   passwordMatches?: boolean | null;
   userEmailExists?: boolean | null;
+  idExists?: boolean;
   pinSentToEmail?: boolean | null;
   userID?: string | null;
 }
@@ -40,6 +41,23 @@ class AuthService {
     } catch (error) {
       console.error("Error registering user: ", error);
       return { userID: null };
+    }
+  }
+
+  static async checkIfSystemIdExists(systemID: string): Promise<AuthResponse> {
+    try {
+      const url = `${this.baseURL}/login/register/checkIfSystemIdExists/${systemID}`;
+
+      const response = await axios.get(url);
+
+      return { idExists: response.data.idExists };
+    } catch (error) {
+      console.error(
+        "Error checking if user system id within the database: ",
+        error
+      );
+
+      return { idExists: false };
     }
   }
 

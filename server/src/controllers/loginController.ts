@@ -1,4 +1,5 @@
 import userModel from "../models/userModel";
+import systemModel from "../models/systemModel";
 
 class LoginController {
   static async verifyUser(req, res): Promise<void> {
@@ -17,6 +18,18 @@ class LoginController {
     res.send({
       success: response.success,
       userEmailExists: response.emailExists,
+      error: response.error,
+    });
+  }
+
+  static async checkIfSystemIdExists(req, res): Promise<void> {
+    const { systemID } = req.params;
+
+    const response = await systemModel.checkIfSystemIdExists(systemID);
+
+    res.send({
+      success: response.success,
+      idExists: response.idExists,
       error: response.error,
     });
   }

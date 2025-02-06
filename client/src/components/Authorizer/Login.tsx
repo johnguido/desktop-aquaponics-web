@@ -11,6 +11,7 @@ interface LoginProps {
       firstName: string;
       lastName: string;
       email: string;
+      systemID: string;
     }>
   >;
 }
@@ -55,6 +56,8 @@ const Login = ({ setUser }: LoginProps) => {
     const startTime = Date.now();
 
     const response = await AuthService.loginUser(state.email, state.password);
+
+    console.log(response);
 
     const elapsedTime = Date.now() - startTime;
     const remainingTime = Math.max(0, 1500 - elapsedTime);
