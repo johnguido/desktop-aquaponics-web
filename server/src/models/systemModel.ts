@@ -119,6 +119,54 @@ class SystemModel {
       };
     }
   }
+
+  static async saveSystemParameters(
+    systemID: string,
+    minTemp: number,
+    maxTemp: number,
+    minTDS: number,
+    maxTDS: number,
+    lightingOnTime: string,
+    lightingOffTime: string
+  ): Promise<SystemResponse> {
+    try {
+      await database.initialize();
+
+      const response = await database
+        .getPool()
+        .query(
+          "UPDATE system_parameters SET min_temp = $1, max_temp = $2, min_tds = $3, max_tds = $4, lighting_on_time = $5, lighting_off_time = $6 WHERE system_id = $7",
+          [
+            minTemp,
+            maxTemp,
+            minTDS,
+            maxTDS,
+            lightingOnTime,
+            lightingOffTime,
+            systemID,
+          ]
+        );
+
+      console.log(response);
+
+      if (response.rowCount > 0) {
+        return {
+          success: true,
+          parameters: response.rows[0],
+        };
+      }
+
+      return {
+        success: false,
+      };
+    } catch (err) {
+      console.error("Error grabbing system parameters:", err);
+      return {
+        success: false,
+        error: err,
+      };
+    }
+  }
 }
 
 export default SystemModel;

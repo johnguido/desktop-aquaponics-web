@@ -11,6 +11,28 @@ interface InputRangeProp {
   MinRange: number;
   MaxRange: number;
   step: number;
+  sharedState: {
+    minTemp: number;
+    maxTemp: number;
+    minTDS: number;
+    maxTDS: number;
+    lightOnTime: string;
+    lightOffTime: string;
+    lightOverrideOn: boolean;
+    lightOverrideOff: boolean;
+  };
+  setSharedState: React.Dispatch<
+    React.SetStateAction<{
+      minTemp: number;
+      maxTemp: number;
+      minTDS: number;
+      maxTDS: number;
+      lightOnTime: string;
+      lightOffTime: string;
+      lightOverrideOn: boolean;
+      lightOverrideOff: boolean;
+    }>
+  >;
 }
 
 const InputRange = ({
@@ -21,6 +43,8 @@ const InputRange = ({
   MinRange,
   MaxRange,
   step,
+  sharedState,
+  setSharedState,
 }: InputRangeProp) => {
   const [state, setState] = useState({
     min: Min,
@@ -51,6 +75,11 @@ const InputRange = ({
           defaultValue={[state.min, state.max]}
           step={step}
           onInput={(e) => {
+            if (type == "temp") {
+              setSharedState({ ...sharedState, minTemp: e[0], maxTemp: e[1] });
+            } else {
+              setSharedState({ ...sharedState, minTDS: e[0], maxTDS: e[1] });
+            }
             setState({ min: e[0], max: e[1] });
           }}
         />

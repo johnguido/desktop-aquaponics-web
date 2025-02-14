@@ -31,6 +31,29 @@ class DashService {
       return { user: null };
     }
   }
+
+  static async saveSystemParameters(
+    systemID: string,
+    minTemp: number,
+    maxTemp: number,
+    minTDS: number,
+    maxTDS: number,
+    lightingOnTime: string,
+    lightingOffTime: string
+  ) {
+    try {
+      const url = `${this.baseURL}/system/parameters/save/${systemID}/${minTemp}/${maxTemp}/${minTDS}/${maxTDS}/${lightingOnTime}/${lightingOffTime}`;
+
+      const response = await axios.post(url);
+
+      return {
+        success: response.data.success,
+      };
+    } catch (error) {
+      console.error("Error signing user in: ", error);
+      return { user: null };
+    }
+  }
 }
 
 export default DashService;

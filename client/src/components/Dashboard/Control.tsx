@@ -16,7 +16,7 @@ const Control = ({ systemID }: ControlProps) => {
     lightOnTime: "",
     lightOffTime: "",
     lightOverrideOn: false,
-    lihgtOverrideOff: false,
+    lightOverrideOff: false,
   });
 
   const fetchSystemParameters = async () => {
@@ -37,8 +37,37 @@ const Control = ({ systemID }: ControlProps) => {
     fetchSystemParameters();
   }, []);
 
-  const onSaveClicked = () => {
-    console.log("SAVED CHANGES");
+  const onSaveClicked = async () => {
+    //TODO handle lighting override
+    //have table that says to override lighting on / off per system ID
+    //if either are toggled we will send the proper request up and set "processed" to null
+    //ESP32 will pull only null processed lighting override requests and set processed to true after handling!
+
+    const response = await DashService.saveSystemParameters(
+      systemID,
+      state.minTemp,
+      state.maxTemp,
+      state.minTDS,
+      state.maxTDS,
+      state.lightOnTime,
+      state.lightOffTime
+    );
+  };
+
+  const setLightingOverrideOn = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setState({ ...state, lightOverrideOn: e.target.checked });
+  };
+
+  const setLightingOverrideOff = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setState({ ...state, lightOverrideOff: e.target.checked });
+  };
+
+  const setLightingOnTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setState({ ...state, lightOnTime: e.target.value + ":00" });
+  };
+
+  const setLightingOffTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setState({ ...state, lightOffTime: e.target.value + ":00" });
   };
 
   return (
@@ -54,6 +83,8 @@ const Control = ({ systemID }: ControlProps) => {
             MinRange={60}
             MaxRange={90}
             step={0.5}
+            sharedState={state}
+            setSharedState={setState}
           ></InputRange>
           <InputRange
             label={"TDS"}
@@ -63,19 +94,43 @@ const Control = ({ systemID }: ControlProps) => {
             MinRange={100}
             MaxRange={600}
             step={5}
+            sharedState={state}
+            setSharedState={setState}
           ></InputRange>
           <fieldset className={styles.lightingRangeSet}>
             <legend>Lighting Range Set</legend>
             <label htmlFor="onTime">On Time</label>
-            <input type="time" id="onTime" defaultValue={state.lightOnTime} />
+            <input
+              type="time"
+              id="onTime"
+              defaultValue={state.lightOnTime}
+              onChange={(e) => setLightingOnTime(e)}
+            />
             <label htmlFor="offTime">Off Time</label>
-            <input type="time" id="offTime" defaultValue={state.lightOffTime} />
+            <input
+              type="time"
+              id="offTime"
+              defaultValue={state.lightOffTime}
+              onChange={(e) => setLightingOffTime(e)}
+            />
           </fieldset>
           <fieldset className={styles.lightingOverride}>
             <legend>Lighting Override</legend>
-            <input type="radio" id="on" name="lighting" value="On" />
+            <input
+              type="radio"
+              id="on"
+              name="lighting"
+              value="On"
+              onChange={(e) => setLightingOverrideOn(e)}
+            />
             <label htmlFor="on">On</label>
-            <input type="radio" id="off" name="lighting" value="Off" />
+            <input
+              type="radio"
+              id="off"
+              name="lighting"
+              value="Off"
+              onChange={(e) => setLightingOverrideOff(e)}
+            />
             <label htmlFor="off">Off</label>
           </fieldset>
           <button className={styles.save} onClick={onSaveClicked}>
