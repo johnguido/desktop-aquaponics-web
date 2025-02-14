@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./InputRange.module.css";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
@@ -26,6 +26,10 @@ const InputRange = ({
     min: Min,
     max: Max,
   });
+
+  useEffect(() => {
+    setState({ min: Min, max: Max });
+  }, [Min, Max]);
 
   return (
     <>

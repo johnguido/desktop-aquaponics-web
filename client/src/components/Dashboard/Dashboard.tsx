@@ -19,7 +19,7 @@ const Dashboard = ({ systemID }: DashboardProps) => {
     <>
       <main className={styles.dashboard}>
         <Status systemID={systemID}></Status>
-        <Control></Control>
+        <Control systemID={systemID}></Control>
       </main>
     </>
   );

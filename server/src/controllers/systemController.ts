@@ -8,6 +8,14 @@ class SystemController {
 
     res.send({ success: response.success, data: response.data });
   }
+
+  static async getSystemParameters(req, res): Promise<void> {
+    const { systemID } = req.params;
+
+    const response = await SystemModel.getSystemParameters(systemID);
+
+    res.send({ success: response.success, parameters: response.parameters });
+  }
 }
 
 export default SystemController;

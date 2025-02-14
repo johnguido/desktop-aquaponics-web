@@ -1,9 +1,13 @@
-//import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Control.module.css";
 import InputRange from "./InputRange";
+import DashService from "./DashService";
 
-const Control = () => {
-  /*
+interface ControlProps {
+  systemID: string;
+}
+
+const Control = ({ systemID }: ControlProps) => {
   const [state, setState] = useState({
     minTemp: 70,
     maxTemp: 80,
@@ -14,7 +18,24 @@ const Control = () => {
     lightOverrideOn: false,
     lihgtOverrideOff: false,
   });
-  */
+
+  const fetchSystemParameters = async () => {
+    const response = await DashService.getSystemParameters(systemID);
+
+    setState({
+      ...state,
+      minTemp: response.parameters.min_temp,
+      maxTemp: response.parameters.max_temp,
+      minTDS: response.parameters.min_tds,
+      maxTDS: response.parameters.max_tds,
+      lightOnTime: response.parameters.lighting_on_time,
+      lightOffTime: response.parameters.lighting_off_time,
+    });
+  };
+
+  useEffect(() => {
+    fetchSystemParameters();
+  }, []);
 
   const onSaveClicked = () => {
     console.log("SAVED CHANGES");
@@ -28,8 +49,8 @@ const Control = () => {
           <InputRange
             label={"Water Temp"}
             type={"temp"}
-            Min={75}
-            Max={80}
+            Min={state.minTemp}
+            Max={state.maxTemp}
             MinRange={60}
             MaxRange={90}
             step={0.5}
@@ -37,8 +58,8 @@ const Control = () => {
           <InputRange
             label={"TDS"}
             type={"TDS"}
-            Min={200}
-            Max={250}
+            Min={state.minTDS}
+            Max={state.maxTDS}
             MinRange={100}
             MaxRange={600}
             step={5}
@@ -46,9 +67,9 @@ const Control = () => {
           <fieldset className={styles.lightingRangeSet}>
             <legend>Lighting Range Set</legend>
             <label htmlFor="onTime">On Time</label>
-            <input type="time" id="onTime" />
+            <input type="time" id="onTime" defaultValue={state.lightOnTime} />
             <label htmlFor="offTime">Off Time</label>
-            <input type="time" id="offTime" />
+            <input type="time" id="offTime" defaultValue={state.lightOffTime} />
           </fieldset>
           <fieldset className={styles.lightingOverride}>
             <legend>Lighting Override</legend>

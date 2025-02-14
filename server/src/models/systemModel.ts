@@ -13,10 +13,22 @@ interface SystemData {
   checked_at: string;
 }
 
+interface SystemParameters {
+  system_id: string;
+  min_temp: string;
+  max_temp: string;
+  min_tds: string;
+  max_tds: string;
+  lighting_on_time: string;
+  lighting_off_time: string;
+  updated_at: string;
+}
+
 interface SystemResponse {
   success: boolean | null;
   idExists?: boolean | null;
   data?: SystemData;
+  parameters?: SystemParameters;
   error?: any;
 }
 
@@ -72,6 +84,35 @@ class SystemModel {
       };
     } catch (err) {
       console.error("Error grabbing system data:", err);
+      return {
+        success: false,
+        error: err,
+      };
+    }
+  }
+
+  static async getSystemParameters(systemID: string): Promise<SystemResponse> {
+    try {
+      await database.initialize();
+
+      const response = await database
+        .getPool()
+        .query("SELECT * FROM system_parameters WHERE system_id = $1", [
+          systemID,
+        ]);
+
+      if (response.rowCount > 0) {
+        return {
+          success: true,
+          parameters: response.rows[0],
+        };
+      }
+
+      return {
+        success: false,
+      };
+    } catch (err) {
+      console.error("Error grabbing system parameters:", err);
       return {
         success: false,
         error: err,
