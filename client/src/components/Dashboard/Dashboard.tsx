@@ -11,8 +11,6 @@ const Dashboard = ({ systemID }: DashboardProps) => {
   //Make "Save" blue initially and go to "Saved" green on save
   //When anythign changes within control panel after change back to "Save" blue
 
-  console.log(systemID);
-
   //on initial load in all data / parameter info pertaining to system id
   //pass data into status
   //pass parameter info into control
@@ -20,7 +18,7 @@ const Dashboard = ({ systemID }: DashboardProps) => {
   return (
     <>
       <main className={styles.dashboard}>
-        <Status></Status>
+        <Status systemID={systemID}></Status>
         <Control></Control>
       </main>
     </>

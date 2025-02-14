@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import loginRouter from "./routes/loginRouter";
 import emailRouter from "./routes/emailRouter";
+import systemRouter from "./routes/systemRouter";
 import path from "path";
 import { config } from "dotenv";
 
@@ -20,6 +21,7 @@ app.use(
 
 app.use("/login", loginRouter);
 app.use("/email", emailRouter);
+app.use("/system", systemRouter);
 
 const buildPath = path.join(__dirname, "../../client/dist");
 app.use(express.static(buildPath));

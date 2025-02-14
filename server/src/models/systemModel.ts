@@ -5,9 +5,18 @@ interface System {
   name: string;
 }
 
+interface SystemData {
+  system_id: string;
+  temperature: string;
+  tds: string;
+  water_level: boolean;
+  checked_at: string;
+}
+
 interface SystemResponse {
   success: boolean | null;
   idExists?: boolean | null;
+  data?: SystemData;
   error?: any;
 }
 
@@ -38,6 +47,33 @@ class SystemModel {
       return {
         success: false,
         idExists: false,
+        error: err,
+      };
+    }
+  }
+
+  static async getSystemStatus(systemID: string): Promise<SystemResponse> {
+    try {
+      await database.initialize();
+
+      const response = await database
+        .getPool()
+        .query("SELECT * FROM system_data WHERE system_id = $1", [systemID]);
+
+      if (response.rowCount > 0) {
+        return {
+          success: true,
+          data: response.rows[0],
+        };
+      }
+
+      return {
+        success: false,
+      };
+    } catch (err) {
+      console.error("Error grabbing system data:", err);
+      return {
+        success: false,
         error: err,
       };
     }

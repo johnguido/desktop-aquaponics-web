@@ -57,8 +57,6 @@ const Login = ({ setUser }: LoginProps) => {
 
     const response = await AuthService.loginUser(state.email, state.password);
 
-    console.log(response);
-
     const elapsedTime = Date.now() - startTime;
     const remainingTime = Math.max(0, 1500 - elapsedTime);
 
