@@ -1,3 +1,4 @@
+import { time } from "console";
 import SystemModel from "../models/systemModel";
 
 class SystemController {
@@ -39,6 +40,42 @@ class SystemController {
     );
 
     res.send({ success: response.success });
+  }
+
+  static async saveSystemData(req, res): Promise<void> {
+    const { systemID, temp, tds, waterLevel, lighting } = req.params;
+
+    const response = await SystemModel.saveSystemData(
+      systemID,
+      temp,
+      tds,
+      waterLevel,
+      lighting
+    );
+
+    if (response.success) {
+      const response = await SystemModel.getSystemParameters(systemID);
+
+      if (response.success) {
+        res.send({
+          success: true,
+          message:
+            "Successfully saved system data and grabbed system parameters",
+          parameters: response.parameters,
+        });
+      } else {
+        res.send({
+          success: true,
+          message:
+            "Successfully saved system data.  Unable to grab system parameters",
+        });
+      }
+    } else {
+      res.send({
+        success: false,
+        message: "Unable to save system data",
+      });
+    }
   }
 }
 

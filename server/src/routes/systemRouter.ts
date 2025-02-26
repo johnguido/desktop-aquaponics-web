@@ -12,4 +12,9 @@ systemRouter.post(
   SystemController.saveSystemParameters
 );
 
+systemRouter.get(
+  "/data/:systemID/:temp/:tds/:waterLevel/:lighting",
+  SystemController.saveSystemData
+);
+
 export default systemRouter;

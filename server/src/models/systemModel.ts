@@ -167,6 +167,35 @@ class SystemModel {
       };
     }
   }
+
+  static async saveSystemData(
+    systemID: string,
+    temp: number,
+    tds: number,
+    waterLevel: number,
+    lighting: number
+  ): Promise<SystemResponse> {
+    try {
+      await database.initialize();
+
+      const response = await database
+        .getPool()
+        .query(
+          "INSERT INTO system_data (system_id, temperature, tds, water_level, lighting, checked_at) VALUES ($1, $2, $3, $4, $5, NOW())",
+          [systemID, temp, tds, waterLevel, lighting]
+        );
+
+      return {
+        success: true,
+      };
+    } catch (err) {
+      console.error("Error saving system data:", err);
+      return {
+        success: false,
+        error: err,
+      };
+    }
+  }
 }
 
 export default SystemModel;
