@@ -43,6 +43,8 @@ const Control = ({ systemID }: ControlProps) => {
     //if either are toggled we will send the proper request up and set "processed" to null
     //ESP32 will pull only null processed lighting override requests and set processed to true after handling!
 
+    //convert time to UTC based upon (CENTRAL TIME ZONE)
+
     const response = await DashService.saveSystemParameters(
       systemID,
       state.minTemp,

@@ -119,6 +119,32 @@ class UserModel {
     }
   }
 
+  static async getAllEmailsPertainingToSystem(systemId: number) {
+    try {
+      await database.initialize();
+
+      const response = await database
+        .getPool()
+        .query("SELECT email FROM users WHERE system_id = $1", [systemId]);
+
+      const emails: string[] = [];
+
+      response.rows.forEach((element) => {
+        emails.push(element.email);
+      });
+
+      return {
+        success: true,
+        emails: emails,
+      };
+    } catch (err) {
+      return {
+        success: false,
+        error: err,
+      };
+    }
+  }
+
   static async setNewPasswordForUser(
     email: string,
     newPassword: string
