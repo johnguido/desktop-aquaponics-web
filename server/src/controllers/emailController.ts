@@ -72,9 +72,12 @@ class EmailController {
       }
     }
 
-    const { systemID, message } = req.params;
+    let { systemID, message } = req.params;
+
+    message = message.replace(/NEWLINE/g, "\n");
 
     console.log("getting all emails");
+    console.log(message);
 
     const response = await UserModel.getAllEmailsPertainingToSystem(systemID);
 

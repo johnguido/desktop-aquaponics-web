@@ -77,8 +77,10 @@ class EmailController {
                     return;
                 }
             }
-            const { systemID, message } = req.params;
+            let { systemID, message } = req.params;
+            message = message.replace(/NEWLINE/g, "\n");
             console.log("getting all emails");
+            console.log(message);
             const response = yield userModel_1.default.getAllEmailsPertainingToSystem(systemID);
             let goodToGo = true;
             if (response.emails) {
