@@ -37,6 +37,23 @@ const Control = ({ systemID }: ControlProps) => {
     fetchSystemParameters();
   }, []);
 
+  const convertCSTtoUTC = (timeString: string) => {
+    const [hours, minutes, seconds] = timeString.split(":").map(Number);
+
+    const date = new Date();
+    date.setHours(hours, minutes, seconds);
+
+    // Add 6 hours to convert from CST to UTC
+    date.setHours(date.getHours() + 6);
+
+    // Format the result back to HH:MM:SS
+    const utcHours = date.getHours().toString().padStart(2, "0");
+    const utcMinutes = date.getMinutes().toString().padStart(2, "0");
+    const utcSeconds = date.getSeconds().toString().padStart(2, "0");
+
+    return `${utcHours}:${utcMinutes}:${utcSeconds}`;
+  };
+
   const onSaveClicked = async () => {
     //TODO handle lighting override
     //have table that says to override lighting on / off per system ID
@@ -44,6 +61,8 @@ const Control = ({ systemID }: ControlProps) => {
     //ESP32 will pull only null processed lighting override requests and set processed to true after handling!
 
     //convert time to UTC based upon (CENTRAL TIME ZONE)
+    const lightOnTime = convertCSTtoUTC(state.lightOnTime);
+    const lightOffTime = convertCSTtoUTC(state.lightOffTime);
 
     const response = await DashService.saveSystemParameters(
       systemID,
@@ -51,8 +70,8 @@ const Control = ({ systemID }: ControlProps) => {
       state.maxTemp,
       state.minTDS,
       state.maxTDS,
-      state.lightOnTime,
-      state.lightOffTime
+      lightOnTime,
+      lightOffTime
     );
   };
 
