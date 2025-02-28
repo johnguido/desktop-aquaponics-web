@@ -22,6 +22,9 @@ const Control = ({ systemID }: ControlProps) => {
   const fetchSystemParameters = async () => {
     const response = await DashService.getSystemParameters(systemID);
 
+    console.log("fetched system parameters");
+    console.log(response);
+
     setState({
       ...state,
       minTemp: response.parameters.min_temp,
