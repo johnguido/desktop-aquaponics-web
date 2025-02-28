@@ -22,8 +22,12 @@ const Control = ({ systemID }: ControlProps) => {
   const fetchSystemParameters = async () => {
     const response = await DashService.getSystemParameters(systemID);
 
-    console.log("fetched system parameters");
-    console.log(response);
+    const convertedLightOnTime = convertUTCtoCST(
+      response.parameters.lighting_on_time
+    );
+    const convertedLightOffTime = convertUTCtoCST(
+      response.parameters.lighting_off_time
+    );
 
     setState({
       ...state,
@@ -31,14 +35,31 @@ const Control = ({ systemID }: ControlProps) => {
       maxTemp: response.parameters.max_temp,
       minTDS: response.parameters.min_tds,
       maxTDS: response.parameters.max_tds,
-      lightOnTime: response.parameters.lighting_on_time,
-      lightOffTime: response.parameters.lighting_off_time,
+      lightOnTime: convertedLightOnTime,
+      lightOffTime: convertedLightOffTime,
     });
   };
 
   useEffect(() => {
     fetchSystemParameters();
   }, []);
+
+  const convertUTCtoCST = (timeString: string) => {
+    const [hours, minutes, seconds] = timeString.split(":").map(Number);
+
+    const date = new Date();
+    date.setHours(hours, minutes, seconds);
+
+    // Subtract 6 hours to convert from UTC to CST
+    date.setHours(date.getHours() - 6);
+
+    // Format the result back to HH:MM:SS
+    const cstHours = date.getHours().toString().padStart(2, "0");
+    const cstMinutes = date.getMinutes().toString().padStart(2, "0");
+    const cstSeconds = date.getSeconds().toString().padStart(2, "0");
+
+    return `${cstHours}:${cstMinutes}:${cstSeconds}`;
+  };
 
   const convertCSTtoUTC = (timeString: string) => {
     const [hours, minutes, seconds] = timeString.split(":").map(Number);
