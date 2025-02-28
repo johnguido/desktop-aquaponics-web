@@ -64,7 +64,7 @@ const Control = ({ systemID }: ControlProps) => {
     const lightOnTime = convertCSTtoUTC(state.lightOnTime);
     const lightOffTime = convertCSTtoUTC(state.lightOffTime);
 
-    const response = await DashService.saveSystemParameters(
+    await DashService.saveSystemParameters(
       systemID,
       state.minTemp,
       state.maxTemp,
