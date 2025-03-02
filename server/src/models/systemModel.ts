@@ -70,7 +70,12 @@ class SystemModel {
 
       const response = await database
         .getPool()
-        .query("SELECT * FROM system_data WHERE system_id = $1", [systemID]);
+        .query(
+          "SELECT * FROM system_data WHERE system_id = $1 ORDER BY checked_at DESC LIMIT 1",
+          [systemID]
+        );
+
+      console.log(response);
 
       if (response.rowCount > 0) {
         return {
