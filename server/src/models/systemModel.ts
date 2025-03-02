@@ -75,7 +75,8 @@ class SystemModel {
           [systemID]
         );
 
-      console.log(response);
+      console.log("yupppp");
+      console.log(response.rows);
 
       if (response.rowCount > 0) {
         return {
