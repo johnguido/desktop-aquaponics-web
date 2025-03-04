@@ -57,7 +57,7 @@ const Status = ({ systemID }: StatusProps) => {
             <input
               type="text"
               id="waterLevel"
-              value={state.waterLevel ? "Good" : "Bad"}
+              value={state.waterLevel ? "Bad" : "Good"}
               readOnly
             />
           </div>
